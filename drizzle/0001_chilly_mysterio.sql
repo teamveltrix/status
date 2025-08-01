@@ -1,0 +1,7 @@
+ALTER TABLE "components" ADD COLUMN "url" text;--> statement-breakpoint
+ALTER TABLE "components" ADD CONSTRAINT "components_parent_id_components_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."components"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "incident_components" ADD CONSTRAINT "incident_components_incident_id_incidents_id_fk" FOREIGN KEY ("incident_id") REFERENCES "public"."incidents"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "incident_components" ADD CONSTRAINT "incident_components_component_id_components_id_fk" FOREIGN KEY ("component_id") REFERENCES "public"."components"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "incident_updates" ADD CONSTRAINT "incident_updates_incident_id_incidents_id_fk" FOREIGN KEY ("incident_id") REFERENCES "public"."incidents"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "maintenance_updates" ADD CONSTRAINT "maintenance_updates_maintenance_id_scheduled_maintenances_id_fk" FOREIGN KEY ("maintenance_id") REFERENCES "public"."scheduled_maintenances"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "uptime_checks" ADD CONSTRAINT "uptime_checks_component_id_components_id_fk" FOREIGN KEY ("component_id") REFERENCES "public"."components"("id") ON DELETE no action ON UPDATE no action;
