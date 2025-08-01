@@ -1,5 +1,6 @@
 'use client'
 
+import superjson from 'superjson'
 import React, { useState } from 'react'
 import { createTRPCReact } from '@trpc/react-query'
 import { httpBatchLink } from '@trpc/client'
@@ -32,6 +33,7 @@ function useTRPCClient() {
       links: [
         httpBatchLink({
           url: '/api/trpc',
+          transformer: superjson,
         }),
       ],
     }),

@@ -78,7 +78,7 @@ export default function StatusPage() {
     if (!components) return [];
 
     const componentMap: Map<string, ComponentWithChildren> = new Map(
-      components.map((c: Component) => ({ ...c, children: [] })).map((c: Component) => [c.id, c])
+      components.map((c): [string, ComponentWithChildren] => [c.id, { ...c, children: [] }])
     );
     
     const roots: ComponentWithChildren[] = [];

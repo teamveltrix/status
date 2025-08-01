@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/lib/trp
 import { db, scheduledMaintenances, maintenanceUpdates } from '@/db'
 import { asc, desc, eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { Maintenance } from "@/types/maintenance";
+import { Maintenance, MaintenanceSchema, CreateMaintenanceSchema, CreateMaintenance } from "@/types/maintenance";
 
 export const maintenanceRouter = createTRPCRouter({
   getAll: publicProcedure.query(async () => {
@@ -13,7 +13,7 @@ export const maintenanceRouter = createTRPCRouter({
           orderBy: [desc(maintenanceUpdates.createdAt)]
         }
       }
-    })
+    }) as Maintenance[]
   }),
 
   list: publicProcedure
@@ -29,20 +29,12 @@ export const maintenanceRouter = createTRPCRouter({
             orderBy: [desc(maintenanceUpdates.createdAt)]
           }
         }
-      })
+      }) as Maintenance[]
     }),
 
   create: protectedProcedure
-    .input(z.object({
-      name: z.string(),
-      status: z.enum(['scheduled', 'in_progress', 'completed']).optional(),
-      message: z.string(),
-      scheduledFor: z.string(),
-      scheduledUntil: z.string(),
-      autoTransition: z.boolean().optional(),
-      componentIds: z.array(z.string()).optional(),
-    }))
-    .mutation(async ({ input }: { input: Maintenance }) => {
+    .input(CreateMaintenanceSchema)
+    .mutation(async ({ input }: { input: CreateMaintenance }) => {
       const [maintenance] = await db.insert(scheduledMaintenances).values({
         name: input.name,
         status: input.status || 'scheduled',

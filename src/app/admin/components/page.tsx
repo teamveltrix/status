@@ -67,7 +67,7 @@ export default function ComponentsPage() {
     if (!components) return [];
 
     const componentMap: Map<string, ComponentWithChildren> = new Map(
-      components.map((c: Component) => [c.id, { ...c, children: [] }])
+      components.map((c) => [c.id, { ...c, children: [] }])
     );
 
     const roots: ComponentWithChildren[] = [];
@@ -469,7 +469,7 @@ export default function ComponentsPage() {
                 <Input
                   id="edit-displayName"
                   name="displayName"
-                  defaultValue={editingComponent?.displayName}
+                  defaultValue={editingComponent?.displayName ?? ""}
                 />
               </div>
               <div className="grid gap-2">
@@ -477,7 +477,7 @@ export default function ComponentsPage() {
                 <Textarea
                   id="edit-description"
                   name="description"
-                  defaultValue={editingComponent?.description}
+                  defaultValue={editingComponent?.description ?? ""}
                   rows={3}
                 />
               </div>
@@ -486,12 +486,12 @@ export default function ComponentsPage() {
                 <Input
                   id="edit-url"
                   name="url"
-                  defaultValue={editingComponent?.url}
+                  defaultValue={editingComponent?.url ?? ""}
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-status">Status</Label>
-                <Select name="status" defaultValue={editingComponent?.status}>
+                <Select name="status" defaultValue={editingComponent?.status ?? 'operational'}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -511,7 +511,7 @@ export default function ComponentsPage() {
                 <Checkbox
                   id="edit-isGroup"
                   name="isGroup"
-                  defaultChecked={editingComponent?.isGroup}
+                  defaultChecked={editingComponent?.isGroup ?? false}
                 />
                 <Label htmlFor="edit-isGroup" className="text-sm font-normal">
                   This is a component group

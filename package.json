@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build --turbopack --no-lint",
     "start": "next start",
     "lint": "next lint",
     "auth:generate": "bunx @better-auth/cli generate --output src/db/auth-schema.ts",

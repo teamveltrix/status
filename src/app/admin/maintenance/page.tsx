@@ -206,14 +206,14 @@ export default function MaintenancePage() {
                   <TableCell>
                     <div>
                       <p className="font-medium">{maintenance.name}</p>
-                      {maintenance.components && Array.isArray(maintenance.components) && maintenance.components.length > 0 && (
+                      {maintenance.componentIds && Array.isArray(maintenance.componentIds) && maintenance.componentIds.length > 0 && (
                         <p className="text-sm text-muted-foreground">
-                          {maintenance.components.length} component{maintenance.components.length > 1 ? 's' : ''} affected
+                          {maintenance.componentIds.length} component{maintenance.componentIds.length > 1 ? 's' : ''} affected
                         </p>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>{getStatusBadge(maintenance.status)}</TableCell>
+                  <TableCell>{getStatusBadge(maintenance.status ?? 'scheduled')}</TableCell>
                   <TableCell className="text-sm">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />

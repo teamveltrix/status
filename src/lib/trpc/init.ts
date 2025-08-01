@@ -1,3 +1,4 @@
+import superjson from "superjson";
 import { initTRPC, TRPCError } from '@trpc/server'
 import { cache } from 'react'
 import { auth } from '@/lib/auth'
@@ -23,6 +24,7 @@ export const createTRPCContext = cache(async () => {
 // For instance, the use of a t variable
 // is common in i18n libraries.
 const t = initTRPC.context<typeof createTRPCContext>().create({
+  transformer: superjson,
   /**
    * @see https://trpc.io/docs/server/data-transformers
    */

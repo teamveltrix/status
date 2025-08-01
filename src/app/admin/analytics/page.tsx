@@ -50,7 +50,9 @@ export default function AnalyticsPage() {
 
   const statusDistribution = components?.reduce((acc, component) => {
     const status = component.status
-    acc[status] = (acc[status] || 0) + 1
+    if (status) {
+      acc[status] = (acc[status] || 0) + 1
+    }
     return acc
   }, {} as Record<string, number>) || {}
 
@@ -250,7 +252,7 @@ export default function AnalyticsPage() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => percent ? `${name} ${(percent * 100).toFixed(0)}%` : ''}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"

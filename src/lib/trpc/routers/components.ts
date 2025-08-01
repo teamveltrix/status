@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/lib/trp
 import { db, components, uptimeChecks } from '@/db'
 import { gte, desc, eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { Component } from "@/types/component";
+import { Component, ComponentSchema } from "@/types/component";
 
 export const componentRouter = createTRPCRouter({
   getAll: publicProcedure.query(async () => {
@@ -15,7 +15,7 @@ export const componentRouter = createTRPCRouter({
           orderBy: [desc(uptimeChecks.timestamp)]
         }
       }
-    })
+    }) as Component[]
   }),
 
   list: publicProcedure.query(async () => {
@@ -28,7 +28,7 @@ export const componentRouter = createTRPCRouter({
           orderBy: [desc(uptimeChecks.timestamp)]
         }
       }
-    })
+    }) as Component[]
   }),
 
   create: protectedProcedure

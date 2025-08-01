@@ -198,7 +198,7 @@ export default function AdminDashboard() {
               {components.map((component) => (
                 <div key={component.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50">
                   <div className="flex items-center space-x-3">
-                    {getStatusIcon(component.status)}
+                    {getStatusIcon(component.status ?? 'operational')}
                     <div>
                       <p className="text-sm font-medium">{component.displayName || component.name}</p>
                       {component.description && (
