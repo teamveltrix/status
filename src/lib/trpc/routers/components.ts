@@ -5,19 +5,6 @@ import { z } from 'zod'
 import { Component, ComponentSchema } from "@/types/component";
 
 export const componentRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async () => {
-    return await db.query.components.findMany({
-      orderBy: [components.position],
-      with: {
-        children: true,
-        uptime: {
-          where: gte(uptimeChecks.timestamp, new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)),
-          orderBy: [desc(uptimeChecks.timestamp)]
-        }
-      }
-    }) as Component[]
-  }),
-
   list: publicProcedure.query(async () => {
     return await db.query.components.findMany({
       orderBy: [components.position],
@@ -81,13 +68,10 @@ export const componentRouter = createTRPCRouter({
       if (input.parentId !== undefined) updateData.parentId = input.parentId
       if (input.url !== undefined) updateData.url = input.url
 
-      await db.update(components)
+      return await db.update(components)
         .set(updateData)
         .where(eq(components.id, input.id))
-
-      return await db.query.components.findFirst({
-        where: eq(components.id, input.id)
-      })
+        .returning()
     }),
 
   delete: protectedProcedure

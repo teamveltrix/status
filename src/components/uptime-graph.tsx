@@ -60,10 +60,12 @@ export function UptimeGraph({ componentName, data, status }: UptimeGraphProps) {
 
     const uptime =
       dayChecks.length > 0
-        ? (dayChecks.filter((c) => c.status === "up").length /
-            dayChecks.length) *
-          100
-        : 100;
+        ? (dayChecks.filter(
+              (c) => c.status === "up" || c.status === "partial"
+            ).length /
+              dayChecks.length) *
+            100
+        : 0;
 
     return {
       date: format(date, "yyyy-MM-dd"),

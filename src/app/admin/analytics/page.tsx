@@ -264,7 +264,7 @@ export default function AnalyticsPage() {
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
-            </CardContent>
+            </CardContent>  
           </Card>
         </TabsContent>
 

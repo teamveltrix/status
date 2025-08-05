@@ -2,6 +2,8 @@ import { db, components, uptimeChecks, incidents } from "@/db";
 import { NextResponse } from "next/server";
 import { and, eq, isNotNull, ne } from "drizzle-orm";
 
+export const dynamic = 'force-dynamic';
+
 const impactStatusMap = {
   critical: "down",
   major: "down",

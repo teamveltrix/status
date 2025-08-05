@@ -16,7 +16,7 @@ import { trpc } from "@/lib/trpc/client";
 import { Component, ComponentWithChildren } from "@/types/component";
 
 
-const ComponentGroup = ({ component }: { component: ComponentWithChildren }) => {
+const ComponentGroup = ({ component, parentStatus }: { component: ComponentWithChildren, parentStatus?: Component["uptime"] }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   if (!component.isGroup) {
@@ -24,8 +24,8 @@ const ComponentGroup = ({ component }: { component: ComponentWithChildren }) => 
       <UptimeGraph
         key={component.id}
         componentName={component.displayName || component.name}
-        data={component.uptime || []}
-        status={component.status || 'operational'}
+        data={parentStatus || []}
+        status={component.status || "operational"}
       />
     );
   }
@@ -48,7 +48,7 @@ const ComponentGroup = ({ component }: { component: ComponentWithChildren }) => 
       {isOpen && (
         <div className="space-y-6 pl-7">
           {component.children.map((child) => (
-            <ComponentGroup key={child.id} component={child} />
+            <ComponentGroup key={child.id} component={child} parentStatus={component.uptime || []} />
           ))}
         </div>
       )}
@@ -67,7 +67,7 @@ export default function StatusPage() {
     data: components,
     isLoading: componentsLoading,
     error: componentsError,
-  } = trpc.components.getAll.useQuery();
+  } = trpc.components.list.useQuery();
   const {
     data: maintenances,
     isLoading: maintenancesLoading,
@@ -92,23 +92,22 @@ export default function StatusPage() {
       }
     }
 
-    const sortItems = (items: ComponentWithChildren[]) => {
-      items.sort((a, b) => {
-        const nameA = (a.displayName || a.name || "").toLowerCase();
-        const nameB = (b.displayName || b.name || "").toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-      items.forEach(item => {
-        if (item.children.length > 0) {
-          sortItems(item.children);
+    const processComponents = (
+      components: ComponentWithChildren[],
+      parentStatus?: Component["status"]
+    ) => {
+      for (const component of components) {
+        if (parentStatus) {
+          component.status = parentStatus;
         }
-      });
+        if (component.children.length > 0) {
+          processComponents(component.children, component.status);
+        }
+      }
     };
+    processComponents(roots);
+    roots.sort((a, b) => a.displayName?.localeCompare(b.displayName || "") || 0);
 
-    sortItems(roots);
-    
     return roots;
   }, [components]);
 

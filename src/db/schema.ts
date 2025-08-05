@@ -140,7 +140,9 @@ export const uptimeChecksRelations = relations(uptimeChecks, ({ one }) => ({
   }),
 }))
 
-// Subscribers (no relations)
+/* Subscribers (no relations),
+   Reserved for future use
+*/
 export const subscribers = pgTable('subscribers', {
   id: uuid('id').defaultRandom().primaryKey(),
   email: text('email').notNull().unique(),
@@ -151,6 +153,7 @@ export const subscribers = pgTable('subscribers', {
 })
 
 // Settings (no relations)
+// Reserved for future use
 export const settings = pgTable('settings', {
   id: uuid('id').defaultRandom().primaryKey(),
   siteName: text('site_name').notNull().default('Status Page'),
@@ -166,16 +169,6 @@ export const settings = pgTable('settings', {
   layoutType: text('layout_type').notNull().default('default'),
   showUptime: boolean('show_uptime').notNull().default(true),
   allowSubscribe: boolean('allow_subscribe').notNull().default(true),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-})
-
-// Better Auth tables
-export const users = pgTable('users', {
-  id: text('id').primaryKey(),
-  email: text('email').unique(),
-  emailVerified: boolean('email_verified'),
-  hashedPassword: text('hashed_password'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
